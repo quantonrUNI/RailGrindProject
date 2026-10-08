@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 826322470060710035}
   - component: {fileID: 4217871036703188056}
   - component: {fileID: 7324200154992948699}
+  - component: {fileID: 2401906483565518901}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -227,3 +228,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9999999, y: 1, z: 0.9999999}
   m_Center: {x: 0.00000047683713, y: 0, z: 0}
+--- !u!114 &2401906483565518901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8161154384000364522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68aef7d163f2c484c99877de79c80f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerHandler

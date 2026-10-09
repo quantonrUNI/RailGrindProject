@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public int speed = 15;
-    public int jump = 25000;
+    public int jump = 200;
     Rigidbody rb;
 
     private void Start()
@@ -14,11 +14,11 @@ public class Movement : MonoBehaviour
     }
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        transform.Translate(moveDirection * speed * Time.deltaTime);
+        rb.AddForce(moveDirection * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

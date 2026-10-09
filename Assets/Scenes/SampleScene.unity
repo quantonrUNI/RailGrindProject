@@ -119,6 +119,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &101674694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7569169626412100662, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
+  m_PrefabInstance: {fileID: 2563963969224089137}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &101674700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101674694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249df62cbc2597644b4b5f85c008421c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Movement
+  speed: 15
+  jump: 200
+--- !u!54 &101674701
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101674694}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &127262577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -986,7 +1032,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7569169626412100662, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 101674700}
+    - targetCorrespondingSourceObject: {fileID: 7569169626412100662, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 101674701}
   m_SourcePrefab: {fileID: 100100000, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
 --- !u!1001 &3704805985305252316
 PrefabInstance:

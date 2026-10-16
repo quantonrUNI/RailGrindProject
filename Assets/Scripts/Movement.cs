@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
     private Vector2 moveDirection;
     private bool isJump = false;
     Rigidbody rb;
+    public bool OnRail = false;
 
     private void Start()
     {
@@ -26,6 +27,14 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log("on rail = " + OnRail);
+        if (!OnRail)
+        {
+            rb.linearVelocity = new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+        }
+        else
+        {
+            rb.linearVelocity.Set(0f, 0f, 0f);
         rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
     }
 

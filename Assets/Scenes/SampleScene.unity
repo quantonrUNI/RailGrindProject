@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Movement
   speed: 15
   jump: 200
+  move: {fileID: 4333021350690994235, guid: 59cc4e8c8f64ab44fa266c519a3e2577, type: 3}
 --- !u!54 &101674701
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1140,6 +1141,10 @@ PrefabInstance:
     - target: {fileID: 133888509226049023, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836204138028383234, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7569169626412100662, guid: 2761ac4bd4428864da56de2c86b68323, type: 3}
       propertyPath: m_Name

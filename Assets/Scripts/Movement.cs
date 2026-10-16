@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     public InputActionReference move;
     private Vector2 moveDirection;
     Rigidbody rb;
+    public bool OnRail = false;
 
     private void Start()
     {
@@ -23,6 +24,14 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+        Debug.Log("on rail = " + OnRail);
+        if (!OnRail)
+        {
+            rb.linearVelocity = new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+        }
+        else
+        {
+            rb.linearVelocity.Set(0f, 0f, 0f);
+        }
     }
 }

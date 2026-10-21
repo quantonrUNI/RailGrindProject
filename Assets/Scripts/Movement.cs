@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     public float speed = 0.5f;
+    [SerializeField] float deceleration = 0.9f;
     public int jump = 250;
     public InputActionReference move;
     private Vector2 moveDirection;
@@ -26,16 +27,30 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+        if (isJump)
+        {
+            if(moveDirection.y == 0 && moveDirection.x == 0)
+            {
+                rb.linearVelocity = rb.linearVelocity * deceleration;
+                //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+            }
+            else
+            {
+                rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+                //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+            }
+            
+        }
+        else
+        {
+            rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed , 0, moveDirection.y * speed);
+            //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+        }
     }
 
     private void OnCollisionEnter (Collision collide)
     {
-        if (collide.gameObject.name == "Ground")
-        {
-            isJump = true;
-        }
-        if (collide.gameObject.name == "LongStraightRail")
+        if (collide.gameObject.tag == "Ground" || collide.gameObject.tag == "Rail")
         {
             isJump = true;
         }

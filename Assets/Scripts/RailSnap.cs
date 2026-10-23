@@ -47,14 +47,16 @@ public class RailSnap : MonoBehaviour
                 if (contactPoints[i].otherCollider.gameObject.tag == "Rail")
                 {
                     transform.position = new Vector3(contactPoints[i].point.x, contactPoints[i].point.y + playerOffset, contactPoints[i].point.z);
-                    movementScript.JustOnRail();
+                    currentRail = collision.gameObject;
+                    movementScript.JustOnRail(collision.gameObject);
                     break;
                 }
             }
             //transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y + PlayerOffset, collision.transform.position.z);
-            currentRail = collision.gameObject;
         }
     }
+
+
 
     private void OnCollisionExit(Collision collision)
     {

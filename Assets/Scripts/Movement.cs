@@ -12,9 +12,11 @@ public class Movement : MonoBehaviour
     private Vector2 moveDirection;
     private bool isJump = false;
     Rigidbody rb;
+    private RailSnap railSnapScript;
 
     private void Start()
     {
+        railSnapScript = GetComponent<RailSnap>();
         rb = GetComponent<Rigidbody>();
         rb.maxLinearVelocity = 8;
         rb.maxAngularVelocity = 8;
@@ -25,19 +27,38 @@ public class Movement : MonoBehaviour
         moveDirection = move.action.ReadValue<Vector2>();
     }
 
+    float railSpeed;
+    public void JustOnRail()
+    {
+        Debug.Log("just on the rail");
+        railSpeed = (rb.linearVelocity.x + rb.linearVelocity.z) / 2;
+    }
+
     private void FixedUpdate()
     {
         if (isJump)
         {
-            if(moveDirection.y == 0 && moveDirection.x == 0)
+            GameObject currentRail = railSnapScript.GetCurrentRail();
+            if (currentRail != null)
             {
-                rb.linearVelocity = rb.linearVelocity * deceleration;
-                //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+                Vector3 direction = currentRail.transform.forward;
+                
+                //Vector3 SnapMoveDirection = new Vector3(direction.x, 0, direction.z);
+                //rb.Move((SnapMoveDirection * speed) , Quaternion.LookRotation(direction, direction));
+                rb.linearVelocity = direction * railSpeed;
             }
             else
             {
-                rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
-                //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+                if (moveDirection.y == 0 && moveDirection.x == 0)
+                {
+                    rb.linearVelocity = rb.linearVelocity * deceleration;
+                    //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+                }
+                else
+                {
+                    rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+                    //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
+                }
             }
             
         }

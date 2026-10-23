@@ -3,10 +3,23 @@ using UnityEngine;
 public class RailSnap : MonoBehaviour
 {
     private GameObject currentRail = null;
+    private float playerOffset = 0.85f;
+    private Movement movementScript;
+
+    public GameObject GetCurrentRail()
+    {
+        return currentRail;
+    }
+
+    public float GetPlayerOffsetFromRail()
+    {
+        return playerOffset;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        movementScript = GetComponent<Movement>();
     }
 
     // Update is called once per frame
@@ -27,14 +40,14 @@ public class RailSnap : MonoBehaviour
         {
             Debug.Log("snapping");
             int likelyContacts = 5;
-            float PlayerOffset = 0.85f;
             ContactPoint[] contactPoints = new ContactPoint[likelyContacts];
             int numOfContacts = collision.GetContacts(contactPoints);
             for(int i = 0; i < numOfContacts; i++)
             {
                 if (contactPoints[i].otherCollider.gameObject.tag == "Rail")
                 {
-                    transform.position = new Vector3(contactPoints[i].point.x, contactPoints[i].point.y + PlayerOffset, contactPoints[i].point.z);
+                    transform.position = new Vector3(contactPoints[i].point.x, contactPoints[i].point.y + playerOffset, contactPoints[i].point.z);
+                    movementScript.JustOnRail();
                     break;
                 }
             }
@@ -45,6 +58,9 @@ public class RailSnap : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        currentRail = null;
+        if(collision.gameObject == currentRail)
+        {
+            currentRail = null;
+        }
     }
 }

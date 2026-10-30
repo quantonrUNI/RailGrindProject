@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
 {
     public float speed = 0.5f;
     [SerializeField] float deceleration = 0.9f;
-    public int jump = 300;
+    public int jumpAmount = 300;
     public InputActionReference move;
     private Vector2 moveDirection;
     private bool isJump = false;
@@ -28,20 +28,26 @@ public class Movement : MonoBehaviour
     }
 
     float railSpeed;
+    const float minimumRailSpeed = 5;
     Vector3 direction;
     public void JustOnRail(GameObject rail)
     {
         Debug.Log("just on the rail");
-        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)) / 2;
+        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)); /// 2;
+        if(railSpeed < minimumRailSpeed) //provides a minimum rail speed
+        {
+            railSpeed = 5;
+        }
         direction = rail.transform.forward;
 
         float xVelocity = rb.linearVelocity.normalized.x;
         float zVelocity = rb.linearVelocity.normalized.z;
 
-        Debug.Log("if(" + direction.x + " - " + xVelocity + ") + (" + direction.z + " - " + zVelocity + ") > " + -direction.x + " - " + xVelocity + ") + (" + -direction.z + " - " + zVelocity + ")");
-        if (Mathf.Abs((direction.x - xVelocity) + (direction.z - zVelocity)) > Mathf.Abs((-direction.x - xVelocity) + (-direction.z - zVelocity))) //if the player is going in the same direction that points backwards from the rails local axis
+        Debug.Log("if(" + direction.x + " - " + xVelocity + ") + (" + direction.z + " - " + zVelocity + ") > (" + -direction.x + " - " + xVelocity + ") + (" + -direction.z + " - " + zVelocity + ")");
+        if (Mathf.Abs(direction.x - xVelocity) + Mathf.Abs(direction.z - zVelocity) > Mathf.Abs(-direction.x - xVelocity) + Mathf.Abs(-direction.z - zVelocity)) //if the player is going in the same direction that points backwards from the rails local axis
         {
             direction = -direction;
+            Debug.Log("true, reversing direction");
         } 
     }
 
@@ -90,7 +96,7 @@ public class Movement : MonoBehaviour
         if (isJump)
         {
             isJump = false;
-            rb.AddForce(new Vector3(0, jump, 0));
+            rb.AddForce(new Vector3(0, jumpAmount, 0));
         }
     }
 }

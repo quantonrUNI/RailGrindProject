@@ -3,6 +3,7 @@ using UnityEngine;
 public class RailSnap : MonoBehaviour
 {
     private GameObject currentRail = null;
+    private GameObject previousRail = null;
     private float playerOffset = 0.85f;
     private Movement movementScript;
 
@@ -22,10 +23,18 @@ public class RailSnap : MonoBehaviour
         movementScript = GetComponent<Movement>();
     }
 
-    // Update is called once per frame
+    const float targetTimeForPreviousRailReset = 0.2f;
+    float countdownToPreviousRailReset;
     void Update()
     {
-        
+        if(previousRail != null)
+        {
+            countdownToPreviousRailReset -= Time.deltaTime;
+            if(countdownToPreviousRailReset < 0)
+            {
+                previousRail = null;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,7 +45,7 @@ public class RailSnap : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("my name is " + gameObject.name + " and I have entered " + collision.gameObject.name);
-        if (collision.gameObject.tag == "Rail" && currentRail == null )
+        if (collision.gameObject.tag == "Rail")
         {
             Debug.Log("snapping");
             int likelyContacts = 5;
@@ -44,9 +53,14 @@ public class RailSnap : MonoBehaviour
             int numOfContacts = collision.GetContacts(contactPoints);
             for(int i = 0; i < numOfContacts; i++)
             {
-                if (contactPoints[i].otherCollider.gameObject.tag == "Rail")
+                if (contactPoints[i].otherCollider.gameObject.tag == "Rail" && contactPoints[i].otherCollider.gameObject != currentRail && contactPoints[i].otherCollider.gameObject != previousRail)
                 {
                     transform.position = new Vector3(contactPoints[i].point.x, contactPoints[i].point.y + playerOffset, contactPoints[i].point.z);
+                    if(currentRail != null)
+                    {
+                        previousRail = currentRail;
+                        countdownToPreviousRailReset = targetTimeForPreviousRailReset;
+                    }
                     currentRail = collision.gameObject;
                     movementScript.JustOnRail(collision.gameObject);
                     break;

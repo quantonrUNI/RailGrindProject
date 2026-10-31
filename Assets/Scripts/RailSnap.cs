@@ -24,7 +24,7 @@ public class RailSnap : MonoBehaviour
     }
 
     const float targetTimeForPreviousRailReset = 0.2f;
-    float countdownToPreviousRailReset;
+    public float countdownToPreviousRailReset = 0.2f;
     void Update()
     {
         if(previousRail != null)
@@ -59,6 +59,7 @@ public class RailSnap : MonoBehaviour
                     if(currentRail != null)
                     {
                         previousRail = currentRail;
+                        movementScript.SetPreviousRailSpeed();
                         countdownToPreviousRailReset = targetTimeForPreviousRailReset;
                     }
                     currentRail = collision.gameObject;
@@ -76,6 +77,7 @@ public class RailSnap : MonoBehaviour
     {
         if(collision.gameObject == currentRail)
         {
+            
             currentRail = null;
         }
     }

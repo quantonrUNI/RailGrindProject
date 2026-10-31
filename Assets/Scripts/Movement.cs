@@ -29,15 +29,22 @@ public class Movement : MonoBehaviour
 
     float railSpeed;
     const float minimumRailSpeed = 5;
+    float previousRailSpeed = minimumRailSpeed;
     Vector3 direction;
     public void JustOnRail(GameObject rail)
     {
         Debug.Log("just on the rail");
         railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)); /// 2;
+        Debug.Log("railspeed: " +  railSpeed + " & previousRailSpeed: " + previousRailSpeed + " & countdownToPreviousRailReset: " + railSnapScript.countdownToPreviousRailReset);
         if(railSpeed < minimumRailSpeed) //provides a minimum rail speed
         {
             railSpeed = 5;
+        }else if(railSpeed < previousRailSpeed && railSnapScript.countdownToPreviousRailReset > 0) //if the previous railspeed is faster than the current one after just transitioning rails make the current railspeed the previous one
+        {
+            railSpeed = previousRailSpeed;
+            Debug.Log("railSpeed = previousRailSpeed");
         }
+
         direction = rail.transform.forward;
 
         float xVelocity = rb.linearVelocity.normalized.x;
@@ -49,6 +56,11 @@ public class Movement : MonoBehaviour
             direction = -direction;
             Debug.Log("true, reversing direction");
         } 
+    }
+
+    public void SetPreviousRailSpeed()
+    {
+        previousRailSpeed = railSpeed;
     }
 
     private void FixedUpdate()
@@ -79,6 +91,7 @@ public class Movement : MonoBehaviour
         else
         {
             rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed , 0, moveDirection.y * speed);
+            
             //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
         }
     }

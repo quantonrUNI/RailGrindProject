@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 3883698448997917720}
   - component: {fileID: 4188653331401685274}
   - component: {fileID: 2976985997857747112}
-  - component: {fileID: 3836204138028383234}
-  - component: {fileID: 5502107571766965148}
   m_Layer: 0
   m_Name: Board
   m_TagString: Board
@@ -92,39 +90,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3836204138028383234
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1729451717037076011}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.9999999, y: 1, z: 0.9999999}
-  m_Center: {x: 0.00000047683713, y: 0, z: 0}
---- !u!114 &5502107571766965148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1729451717037076011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68aef7d163f2c484c99877de79c80f94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TriggerHandler
 --- !u!1 &7569169626412100662
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   speed: 15
   deceleration: 0.8
-  jump: 25000
+  jumpAmount: 300
   move: {fileID: 0}
 --- !u!54 &4723993358808149323
 Rigidbody:

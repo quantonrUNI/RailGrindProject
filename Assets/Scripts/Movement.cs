@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
 {
     public float speed = 0.5f;
     [SerializeField] float deceleration = 0.9f;
-    public int jump = 300;
+    public int jumpAmount = 600;
     public InputActionReference move;
     private Vector2 moveDirection;
     private bool isJump = false;
@@ -28,21 +28,40 @@ public class Movement : MonoBehaviour
     }
 
     float railSpeed;
+    const float minimumRailSpeed = 5;
+    float previousRailSpeed = minimumRailSpeed;
     Vector3 direction;
     public void JustOnRail(GameObject rail)
     {
         Debug.Log("just on the rail");
-        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)) / 2;
+        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)); /// 2;
+        Debug.Log("railspeed: " +  railSpeed + " & previousRailSpeed: " + previousRailSpeed + " & countdownToPreviousRailReset: " + railSnapScript.countdownToPreviousRailReset);
+        if(railSpeed < minimumRailSpeed) //provides a minimum rail speed
+        {
+            railSpeed = 5;
+        }else if(railSpeed < previousRailSpeed && railSnapScript.countdownToPreviousRailReset > 0) //if the previous railspeed is faster than the current one after just transitioning rails make the current railspeed the previous one
+        {
+            railSpeed = previousRailSpeed;
+            Debug.Log("railSpeed = previousRailSpeed");
+        }
+
         direction = rail.transform.forward;
 
         float xVelocity = rb.linearVelocity.normalized.x;
         float zVelocity = rb.linearVelocity.normalized.z;
 
-        Debug.Log("if(" + direction.x + " - " + xVelocity + ") + (" + direction.z + " - " + zVelocity + ") > " + -direction.x + " - " + xVelocity + ") + (" + -direction.z + " - " + zVelocity + ")");
-        if (Mathf.Abs((direction.x - xVelocity) + (direction.z - zVelocity)) > Mathf.Abs((-direction.x - xVelocity) + (-direction.z - zVelocity))) //if the player is going in the same direction that points backwards from the rails local axis
+        Debug.Log("if(" + direction.x + " - " + xVelocity + ") + (" + direction.z + " - " + zVelocity + ") > (" + -direction.x + " - " + xVelocity + ") + (" + -direction.z + " - " + zVelocity + ")");
+        if (Mathf.Abs(direction.x - xVelocity) + Mathf.Abs(direction.z - zVelocity) > Mathf.Abs(-direction.x - xVelocity) + Mathf.Abs(-direction.z - zVelocity)) //if the player is going in the same direction that points backwards from the rails local axis
         {
             direction = -direction;
-        } 
+            Debug.Log("true, reversing direction");
+        }
+        rb.MoveRotation(rail.transform.rotation * Quaternion.Euler(0,90,0));
+    }
+
+    public void SetPreviousRailSpeed()
+    {
+        previousRailSpeed = railSpeed;
     }
 
     private void FixedUpdate()
@@ -73,6 +92,7 @@ public class Movement : MonoBehaviour
         else
         {
             rb.linearVelocity = rb.linearVelocity + new Vector3(moveDirection.x * speed , 0, moveDirection.y * speed);
+            
             //Debug.Log(moveDirection.x + " is movedirection.x, " + moveDirection.y + " is movedirection.y, " + rb.linearVelocity.x + " is rb.linearVelocity.x, " + rb.linearVelocity.z + " is rb.linearVelocity.z, ");
         }
     }
@@ -90,7 +110,10 @@ public class Movement : MonoBehaviour
         if (isJump)
         {
             isJump = false;
-            rb.AddForce(new Vector3(0, jump, 0));
+            rb.AddForce(new Vector3(0, jumpAmount, 0));
+        }else if(rb.linearVelocity.y < 0) //if the player is falling
+        {
+            rb.linearVelocity += new Vector3(0, -1, 0);
         }
     }
 }

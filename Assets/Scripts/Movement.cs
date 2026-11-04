@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour
 {
     public float speed = 0.5f;
     [SerializeField] float deceleration = 0.9f;
-    public int jumpAmount = 300;
+    public int jumpAmount = 600;
     public InputActionReference move;
     private Vector2 moveDirection;
     private bool isJump = false;
@@ -55,7 +55,8 @@ public class Movement : MonoBehaviour
         {
             direction = -direction;
             Debug.Log("true, reversing direction");
-        } 
+        }
+        rb.MoveRotation(rail.transform.rotation * Quaternion.Euler(0,90,0));
     }
 
     public void SetPreviousRailSpeed()
@@ -110,6 +111,9 @@ public class Movement : MonoBehaviour
         {
             isJump = false;
             rb.AddForce(new Vector3(0, jumpAmount, 0));
+        }else if(rb.linearVelocity.y < 0) //if the player is falling
+        {
+            rb.linearVelocity += new Vector3(0, -1, 0);
         }
     }
 }

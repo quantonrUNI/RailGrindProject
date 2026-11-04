@@ -4,17 +4,12 @@ public class RailSnap : MonoBehaviour
 {
     private GameObject currentRail = null;
     private GameObject previousRail = null;
-    private float playerOffset = 0.85f;
+    private float totalPlayerOffset = 0.85f;
     private Movement movementScript;
 
     public GameObject GetCurrentRail()
     {
         return currentRail;
-    }
-
-    public float GetPlayerOffsetFromRail()
-    {
-        return playerOffset;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,6 +39,9 @@ public class RailSnap : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        float playerOffsetX;
+        float playerOffsetY;
+        float playerOffsetZ;
         Debug.Log("my name is " + gameObject.name + " and I have entered " + collision.gameObject.name);
         if (collision.gameObject.tag == "Rail")
         {
@@ -53,9 +51,14 @@ public class RailSnap : MonoBehaviour
             int numOfContacts = collision.GetContacts(contactPoints);
             for(int i = 0; i < numOfContacts; i++)
             {
-                if (contactPoints[i].otherCollider.gameObject.tag == "Rail" && contactPoints[i].otherCollider.gameObject != currentRail && contactPoints[i].otherCollider.gameObject != previousRail)
+                GameObject possibleRail = contactPoints[i].otherCollider.gameObject;
+                if (possibleRail.tag == "Rail" && possibleRail != currentRail && possibleRail != previousRail)
                 {
-                    transform.position = new Vector3(contactPoints[i].point.x, contactPoints[i].point.y + playerOffset, contactPoints[i].point.z);
+                    playerOffsetX = totalPlayerOffset * possibleRail.transform.up.x;
+                    playerOffsetY = totalPlayerOffset * possibleRail.transform.up.y;
+                    playerOffsetZ = totalPlayerOffset * possibleRail.transform.up.z;
+
+                    transform.position = new Vector3(contactPoints[i].point.x + playerOffsetX, contactPoints[i].point.y + playerOffsetY, contactPoints[i].point.z + playerOffsetZ);
                     if(currentRail != null)
                     {
                         previousRail = currentRail;

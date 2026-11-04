@@ -13,6 +13,7 @@ public class Movement : MonoBehaviour
     private bool isJump = false;
     Rigidbody rb;
     private RailSnap railSnapScript;
+    private Quaternion resetAngle;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.maxLinearVelocity = 8;
         rb.maxAngularVelocity = 8;
+        resetAngle = transform.rotation;
     }
 
     private void Update()
@@ -102,6 +104,10 @@ public class Movement : MonoBehaviour
         if (collide.gameObject.tag == "Ground" || collide.gameObject.tag == "Rail")
         {
             isJump = true;
+        }
+        if (collide.gameObject.tag == "Ground" && !(collide.gameObject.tag == "Rail"))
+        {
+            transform.rotation = resetAngle;
         }
     }
 

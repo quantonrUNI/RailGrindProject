@@ -41,7 +41,8 @@ public class Movement : MonoBehaviour
         if(railSpeed < minimumRailSpeed) //provides a minimum rail speed
         {
             railSpeed = 5;
-        }else if(railSpeed < previousRailSpeed && railSnapScript.countdownToPreviousRailReset > 0) //if the previous railspeed is faster than the current one after just transitioning rails make the current railspeed the previous one
+        }
+        else if(railSpeed < previousRailSpeed && railSnapScript.countdownToPreviousRailReset > 0) //if the previous railspeed is faster than the current one after just transitioning rails make the current railspeed the previous one
         {
             railSpeed = previousRailSpeed;
             Debug.Log("railSpeed = previousRailSpeed");

@@ -6,6 +6,7 @@ public class RailSnap : MonoBehaviour
     private GameObject previousRail = null;
     private float totalPlayerOffset = 0.85f;
     private Movement movementScript;
+    private AudioSource source;
 
     public GameObject GetCurrentRail()
     {
@@ -16,6 +17,7 @@ public class RailSnap : MonoBehaviour
     void Start()
     {
         movementScript = GetComponent<Movement>();
+        source = GetComponent<AudioSource>();
     }
 
     const float targetTimeForPreviousRailReset = 0.2f;
@@ -67,6 +69,10 @@ public class RailSnap : MonoBehaviour
                     }
                     currentRail = collision.gameObject;
                     movementScript.JustOnRail(collision.gameObject);
+                    float lowPitch = 0.6f;
+                    float highPitch = 1.4f;
+                    source.Play();
+                    source.pitch = Random.Range(lowPitch, highPitch);
                     break;
                 }
             }
@@ -80,8 +86,9 @@ public class RailSnap : MonoBehaviour
     {
         if(collision.gameObject == currentRail)
         {
-            
             currentRail = null;
+            source.Stop();
         }
+
     }
 }

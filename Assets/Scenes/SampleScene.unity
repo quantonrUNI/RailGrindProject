@@ -254,6 +254,7 @@ MonoBehaviour:
   deceleration: 0.9
   jumpAmount: 300
   move: {fileID: 4333021350690994235, guid: 59cc4e8c8f64ab44fa266c519a3e2577, type: 3}
+  camera: {fileID: 963194225}
 --- !u!54 &101674701
 Rigidbody:
   m_ObjectHideFlags: 0

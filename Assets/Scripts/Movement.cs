@@ -10,10 +10,12 @@ public class Movement : MonoBehaviour
     public int jumpAmount = 600;
     public InputActionReference move;
     private Vector2 moveDirection;
+    private Vector3 refForward;
+    private Vector3 refRight;
     private bool isJump = false;
     Rigidbody rb;
     private RailSnap railSnapScript;
-    private Quaternion resetAngle;
+    public GameObject camera;
 
     private void Start()
     {
@@ -21,12 +23,45 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.maxLinearVelocity = 8;
         rb.maxAngularVelocity = 8;
-        resetAngle = transform.rotation;
     }
 
     private void Update()
     {
-        moveDirection = move.action.ReadValue<Vector2>();
+        refForward = camera.transform.forward;
+        refRight = camera.transform.right;
+        moveDirection = moveDirection = new Vector2(0,0);
+        if (Input.GetKey(KeyCode.W))
+        {
+            moveDirection = new Vector2(refForward.x, refForward.z);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveDirection = new Vector2(-refRight.x, -refRight.z);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveDirection = new Vector2(-refForward.x, -refForward.z);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveDirection = new Vector2(refRight.x, refRight.z);
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+        {
+            moveDirection = (new Vector2(-refRight.x, -refRight.z) + new Vector2(refForward.x, refForward.z)) / 2;
+        }
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+        {
+            moveDirection = (new Vector2(refRight.x, refRight.z) + new Vector2(refForward.x, refForward.z)) / 2;
+        }
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+        {
+            moveDirection = (new Vector2(-refRight.x, -refRight.z) + new Vector2(-refForward.x, -refForward.z)) / 2;
+        }
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+        {
+            moveDirection = (new Vector2(refRight.x, refRight.z) + new Vector2(-refForward.x, -refForward.z)) / 2;
+        }
     }
 
     float railSpeed;
@@ -105,10 +140,6 @@ public class Movement : MonoBehaviour
         if (collide.gameObject.tag == "Ground" || collide.gameObject.tag == "Rail")
         {
             isJump = true;
-        }
-        if (collide.gameObject.tag == "Ground" && !(collide.gameObject.tag == "Rail"))
-        {
-            transform.rotation = resetAngle;
         }
     }
 

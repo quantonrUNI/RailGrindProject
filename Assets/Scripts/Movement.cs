@@ -75,11 +75,11 @@ public class Movement : MonoBehaviour
     public void JustOnRail(GameObject rail)
     {
         Debug.Log("just on the rail");
-        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)); /// 2;
+        railSpeed = (Mathf.Abs(rb.linearVelocity.x) + Mathf.Abs(rb.linearVelocity.z)); //normalise the speed of the player into one positive number
         Debug.Log("railspeed: " +  railSpeed + " & previousRailSpeed: " + previousRailSpeed + " & countdownToPreviousRailReset: " + railSnapScript.countdownToPreviousRailReset);
         if(railSpeed < minimumRailSpeed) //provides a minimum rail speed
         {
-            railSpeed = 5;
+            railSpeed = minimumRailSpeed;
         }
         else if(railSpeed < previousRailSpeed && railSnapScript.countdownToPreviousRailReset > 0) //if the previous railspeed is faster than the current one after just transitioning rails make the current railspeed the previous one
         {
@@ -87,7 +87,7 @@ public class Movement : MonoBehaviour
             Debug.Log("railSpeed = previousRailSpeed");
         }
 
-        direction = rail.transform.forward;
+        direction = rail.transform.forward; //the forward direction of the rail as a normalised vector pointing somewhere
 
         float xVelocity = rb.linearVelocity.normalized.x;
         float zVelocity = rb.linearVelocity.normalized.z;
@@ -98,7 +98,7 @@ public class Movement : MonoBehaviour
             direction = -direction;
             Debug.Log("true, reversing direction");
         }
-        rb.MoveRotation(rail.transform.rotation * Quaternion.Euler(0,90,0));
+        rb.MoveRotation(rail.transform.rotation * Quaternion.Euler(0,90,0)); //makes the player face the direction they are going
     }
 
     public void SetPreviousRailSpeed()
@@ -111,7 +111,7 @@ public class Movement : MonoBehaviour
         if (isJump)
         {
             GameObject currentRail = railSnapScript.GetCurrentRail();
-            if (currentRail != null)
+            if (currentRail != null) //if on a rail
             {
                 Debug.Log("direction x: " + direction.x + " y: " + direction.y + " z: " + direction.z + " railSpeed: " + railSpeed);
                 rb.linearVelocity = direction * railSpeed;

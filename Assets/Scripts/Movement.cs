@@ -27,9 +27,13 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        // grabs the forward and right of the main camera for later use
         refForward = camera.transform.forward;
         refRight = camera.transform.right;
+        // initializes the Vector2 for the player's movement that is used later
         moveDirection = moveDirection = new Vector2(0,0);
+        // for each input that doesn't counter act each other (W & S etc.) sets the movement
+        // direction vector to the appropriate vector2 from the componets of the camera's vector3
         if (Input.GetKey(KeyCode.W))
         {
             moveDirection = new Vector2(refForward.x, refForward.z);
@@ -137,6 +141,7 @@ public class Movement : MonoBehaviour
 
     private void OnCollisionEnter (Collision collide)
     {
+        // checks if the player is on the ground or on a rail, if so they are allowed to jump
         if (collide.gameObject.tag == "Ground" || collide.gameObject.tag == "Rail")
         {
             isJump = true;
@@ -145,6 +150,8 @@ public class Movement : MonoBehaviour
 
     private void OnJump()
     {
+        // if jump is allowed where the player currently is, sets the jump bool to false to prevent infinite jumping
+        // adds a force vector upwards by the jump height value
         if (isJump)
         {
             isJump = false;
